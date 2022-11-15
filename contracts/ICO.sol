@@ -11,9 +11,11 @@ contract ICO is ERC20{
     }
 
     function buyToken() public payable returns (uint) {
-        uint etherAmount = msg.value;
+        require(msg.value >= 1 ether,"Minimum deposit amount is 1 ether");
+        uint etherAmount = msg.value / 10**18;
         
         uint ETHPriceInDoller = getLatestPrice();
+        // uint ETHPriceInDoller = 1500;   
 
         uint tokenAmount = ETHPriceInDoller * etherAmount;
 
