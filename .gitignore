@@ -12,3 +12,5 @@ artifacts
 contracts/.deps
 contracts/artifacts
 BAC
+
+test
