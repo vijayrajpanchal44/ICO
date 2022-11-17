@@ -12,22 +12,14 @@ module.exports = {
     }
   },
 
-  // gasReporter: {
-  //   currency: 'CHF',
-  //   gasPrice: 21
-  // },
-
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
   
   solidity: {
     compilers: [
-      // {
-      //   version: "0.5.17",
-      // },
       {
-        version: "0.8.12",
+        version: "0.8.7",
       },
     ],
   }
