@@ -13,4 +13,4 @@ contracts/.deps
 contracts/artifacts
 BAC
 
-test
+test/icoTest.js
