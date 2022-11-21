@@ -15,7 +15,7 @@ contract ICO is ERC20 {
     AggregatorV3Interface internal priceFeed;
     uint256 public constant TOKEN_PRICE_USD = 1 * 10**8; //10**8 decimals of USD
 
-    event TokenMinted(
+    event TokenBought(
         uint256 tokenAmount,
         uint256 totalTokenPrice,
         uint256 remainingWeiAmount,
@@ -39,7 +39,7 @@ contract ICO is ERC20 {
      * @param tokenAmount Amount of Rapid token which user want to buy
      * @dev User needs to provide sufficient amount of wei as per the rapid tokens Price in dollar
      */
-    function buyTokens(uint256 tokenAmount) public payable {
+    function buyRapidTokens(uint256 tokenAmount) public payable {
         uint256 totalTokenPrice = calculateTokensPrice(tokenAmount);
 
         require(
@@ -54,7 +54,8 @@ contract ICO is ERC20 {
         }
 
         _mint(msg.sender, tokenAmount);
-        emit TokenMinted(
+
+        emit TokenBought(
             tokenAmount,
             totalTokenPrice,
             remainingBalance,
@@ -73,14 +74,11 @@ contract ICO is ERC20 {
         view
         returns (uint256)
     {
-        require(tokenAmount > 0, "tokenAmount must be greater than 0");
+        require(tokenAmount != 0, "tokenAmount must be greater than 0");
 
-        require(
-            tokenAmount >= 10**decimals(),
-            "use decimals with token amount"
-        );
 
         uint256 currentEthPrice = getLatestPrice();
+        // uint256 currentEthPrice = 1200*10**8; //testing
         //1 RI token = 1 $
         //convert all tokenAmount into dollar and divide by decimals
         uint256 tokenAmount_USD = (tokenAmount * TOKEN_PRICE_USD) /
