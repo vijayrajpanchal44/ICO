@@ -2,6 +2,7 @@
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 /**
@@ -11,7 +12,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
  * @dev All function calls are currently implemented without side effects
  */
 
-contract ICO is ERC20 {
+contract ICO is ERC20, Ownable {
     AggregatorV3Interface internal priceFeed;
     uint256 public constant TOKEN_PRICE_USD = 1 * 10**8; //10**8 decimals of USD
 
@@ -28,7 +29,7 @@ contract ICO is ERC20 {
      * Address: 0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
      */
     constructor() ERC20("Rapid Innovation", "RI") {
-        require(block.chainid == 5, "Please deploy on Goerli testnet");
+        require(block.chainid == 5, "ICO: Please deploy on Goerli testnet");
         priceFeed = AggregatorV3Interface(
             0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
         );
@@ -36,7 +37,7 @@ contract ICO is ERC20 {
 
     /**
      * @notice User can buy rapid token with exchange of ethers
-     * @param tokenAmount Amount of Rapid token which user want to buy
+     * @param tokenAmount Amount of Rapid token
      * @dev User needs to provide sufficient amount of wei as per the rapid tokens Price in dollar
      */
     function buyRapidTokens(uint256 tokenAmount) public payable {
@@ -44,10 +45,10 @@ contract ICO is ERC20 {
 
         require(
             msg.value >= totalTokenPrice,
-            "Provide more value to get expected token amount"
+            "ICO: Insufficient ether amount"
         );
 
-        uint256 remainingBalance = 0;
+        uint256 remainingBalance;
         if (msg.value > totalTokenPrice) {
             remainingBalance = msg.value - totalTokenPrice;
             payable(msg.sender).transfer(remainingBalance);
@@ -62,6 +63,15 @@ contract ICO is ERC20 {
             msg.sender
         );
     }
+    /** 
+      * @param amount (type uint256) amount of ether
+      * @dev function use to withdraw ether from contract
+    */
+    function withdraw(uint256 amount) public onlyOwner returns (bool success) {
+      require(amount <= address(this).balance, "ICO: function withdraw invalid input");
+      payable(_msgSender()).transfer(amount);
+      return true;
+    }
 
     /**
      * @notice Calculates price of rapid tokens in wei as per current ether price in dollar
@@ -74,7 +84,7 @@ contract ICO is ERC20 {
         view
         returns (uint256)
     {
-        require(tokenAmount != 0, "tokenAmount must be greater than 0");
+        require(tokenAmount != 0, "ICO: tokenAmount must be greater than 0");
 
 
         uint256 currentEthPrice = getLatestPrice();
