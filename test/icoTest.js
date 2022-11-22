@@ -96,23 +96,11 @@ describe("Initial Coin Offering (ICO) contract", async function () {
         expect(before_withdraw.lt(after_withdraw)).to.equal(true);
     });
 
-    it.only("Do not have permission to withdraw ether from contract", async function () {
+    it("Do not have permission to withdraw ether from contract", async function () {
         await icoContract.buyRapidTokens(1000000000000000000000n, {
             value: ethers.utils.parseUnits("1", "ether"),
         });
         const wallet = icoContract.connect(accounts[2]);
         await expect(wallet.withdraw(100000000000000000n)).to.be.reverted;
-    });
-
-    it("Transfer adds amount to destination account", async function () {
-        await icoContract.buyRapidTokens(1000000000000000000000n, {
-            value: ethers.utils.parseUnits("1", "ether"),
-        });
-        const amount = 1000000000000000000n;
-
-        const tokenPrice = await icoContract.calculateTokensPrice(amount);
-        
-        await token.transfer(accounts[1].address, amount);
-        expect(await icoContract.balanceOf(icoContract.address)).to.equal(amount);
     });
 });

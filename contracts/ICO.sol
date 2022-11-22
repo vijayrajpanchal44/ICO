@@ -63,14 +63,18 @@ contract ICO is ERC20, Ownable {
             msg.sender
         );
     }
-    /** 
-      * @param amount (type uint256) amount of ether
-      * @dev function use to withdraw ether from contract
-    */
+
+    /**
+     * @param amount (type uint256) amount of ether
+     * @dev function use to withdraw ether from contract
+     */
     function withdraw(uint256 amount) public onlyOwner returns (bool success) {
-      require(amount <= address(this).balance, "ICO: function withdraw invalid input");
-      payable(_msgSender()).transfer(amount);
-      return true;
+        require(
+            amount <= address(this).balance,
+            "ICO: function withdraw invalid input"
+        );
+        payable(_msgSender()).transfer(amount);
+        return true;
     }
 
     /**
@@ -86,11 +90,10 @@ contract ICO is ERC20, Ownable {
     {
         require(tokenAmount != 0, "ICO: tokenAmount must be greater than 0");
 
-
         uint256 currentEthPrice = getLatestPrice();
         // uint256 currentEthPrice = 1200*10**8; //testing
         //1 RI token = 1 $
-        //convert all tokenAmount into dollar and divide by decimals
+        //convert all tokenAmount into dollar
         uint256 tokenAmount_USD = (tokenAmount * TOKEN_PRICE_USD) /
             10**decimals(); //10**18
 
