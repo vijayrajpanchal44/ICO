@@ -1,29 +1,53 @@
 # Initial Coin Offering (ICO) contract
+## Table of Content
 
-Tutorial using Hardhat(Buidler) to complie, deploy and automated unit tests Solidity smart contract.  
-you use this repository as Initial Coin Offering (ICO) contract template or ERC20 template.   
-To run these tutorials, you must have the following installed:
+- [Project Description](#project-description)
+- [Technologies Used](#technologies-used)
+- [Folder Structure](#a-typical-top-level-directory-layout)
+- [Install and Run](#install-and-run)
 
-- [nodejs](https://nodejs.org/en/)
+## Project Description 
+This Initial Coin Offering(ICO) project helps to buy Rapid tokens in exchange for Ether as per the current price of ether in the dollar. The rapid token price is 1 Dollar so if a user wants to buy the rapid token then he needs to pay 1 dollar of worth ether.
 
-- [npm](https://github.com/nvm-sh/nvm)
+## Technologies Used 
+- Soldity
+- Openzepplein
+- Chainlink
+- Hardhat
 
+
+## A typical top-level directory layout
+
+    .
+    ├── Contracts               # Contract files (alternatively `dist`)
+    ├── Scripts                 # Script files (alternatively `deploy`)
+    ├── test                    # Automated tests (alternatively `spec` or `tests`)
+    ├── LICENSE
+    └── README.md
+
+
+## Install and Run
+To run this project, you must have the following installed:
+1.  [nodejs](https://nodejs.org/en/)
+2. [npm](https://github.com/nvm-sh/nvm)
+
+- Run `npm install` to install dependencies
 ```bash
 $ npm install
 ```
+- Run `npx hardhat compile` to compile all contracts.
 
-to compile your smart contract to get an ABI and artifact of a smart contract.
 
 ```bash
 $ npx hardhat compile
 ```
-
-for a unit testing smart contract using the command line.
+## Test  
+For a unit testing smart contract using the command line.
 
 ```
 $ npx hardhat test
 ```
-expecting `icoTest.js` result.
+Expecting `icoTest.js` result.
 ```bash
 
   Initial Coin Offering (ICO) contract
@@ -43,7 +67,7 @@ expecting `icoTest.js` result.
 
 ```
 
-after testing if you want to deploy the contract using the command line.
+After testing if you want to deploy the contract using the command line.
 
 ```bash
 

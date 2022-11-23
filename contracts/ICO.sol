@@ -13,7 +13,7 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
  */
 
 contract ICO is ERC20, Ownable {
-    AggregatorV3Interface internal priceFeed;
+    AggregatorV3Interface public immutable priceFeed;
     uint256 public constant TOKEN_PRICE_USD = 1 * 10**8; //10**8 decimals of USD
 
     event TokenBought(
@@ -40,7 +40,7 @@ contract ICO is ERC20, Ownable {
      * @param tokenAmount Amount of Rapid token
      * @dev User needs to provide sufficient amount of wei as per the rapid tokens Price in dollar
      */
-    function buyRapidTokens(uint256 tokenAmount) public payable {
+    function buyRapidTokens(uint256 tokenAmount) external payable {
         uint256 totalTokenPrice = calculateTokensPrice(tokenAmount);
 
         require(
@@ -68,7 +68,7 @@ contract ICO is ERC20, Ownable {
      * @param amount (type uint256) amount of ether
      * @dev function use to withdraw ether from contract
      */
-    function withdraw(uint256 amount) public onlyOwner returns (bool success) {
+    function withdraw(uint256 amount) external onlyOwner returns (bool success) {
         require(
             amount <= address(this).balance,
             "ICO: function withdraw invalid input"
